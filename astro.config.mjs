@@ -1,37 +1,36 @@
-import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
-import sitemap from '@astrojs/sitemap';
-import { resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { defineConfig } from "astro/config";
+import tailwindcss from "@astrojs/tailwind";
+import sitemap from "@astrojs/sitemap";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://yourdomain.com', // 后续替换为实际域名
-  base: '/',
-  trailingSlash: 'ignore',
+  site: "https://yourdomain.com", // 后续替换为实际域名
+  base: "/",
+  trailingSlash: "ignore",
   integrations: [
     tailwindcss(),
     sitemap({
-      changefreq: 'weekly',
+      changefreq: "weekly",
       priority: 0.7,
       lastmod: new Date(),
     }),
   ],
   compressHTML: true,
   build: {
-    format: 'file',
+    format: "file",
   },
-  output: 'static',
+  output: "static",
   image: {
     service: {
-      entrypoint: 'astro/assets/services/sharp',
+      entrypoint: "astro/assets/services/sharp",
     },
   },
   vite: {
-    plugins: [tailwindcss()],
     resolve: {
       alias: {
-        '@': resolve('./src'),
+        "@": resolve("./src"),
       },
     },
   },

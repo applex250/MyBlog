@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --black: #0a0a0a;
@@ -40,7 +42,7 @@ html {
 }
 
 body {
-  font-family: 'Crimson Pro', serif;
+  font-family: "Crimson Pro", serif;
   background: var(--white);
   color: var(--black);
   line-height: 1.7;
@@ -118,7 +120,7 @@ body {
 }
 
 .site-nav-item {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   color: var(--gray-500);
   text-decoration: none;
@@ -210,7 +212,7 @@ body {
 .page-subtitle {
   font-size: 16px;
   color: var(--gray-500);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 /* Site Footer */
@@ -220,7 +222,7 @@ body {
   border-top: 1px solid var(--border-light);
   text-align: center;
   color: var(--gray-400);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 12px;
 }
 
@@ -257,7 +259,7 @@ body {
   gap: 24px;
   color: var(--gray-500);
   font-size: 14px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .article-meta-item {
@@ -365,7 +367,7 @@ body {
   padding: 8px 16px;
   font-size: 14px;
   transition: all 0.3s ease;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
 }
 
 .skill-tag:hover {
@@ -393,7 +395,7 @@ body {
 }
 
 .project-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -443,7 +445,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 13px;
   color: var(--gray-400);
   transition: color 0.3s ease;
@@ -470,7 +472,7 @@ body {
   align-items: center;
   gap: 20px;
   font-size: 13px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--gray-400);
 }
 
@@ -515,7 +517,7 @@ body {
 }
 
 .article-card::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 0;
@@ -534,7 +536,7 @@ body {
   display: inline-block;
   padding: 4px 12px;
   font-size: 12px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   color: var(--gray-500);
   background: var(--gray-100);
   border-radius: 4px;
@@ -573,7 +575,7 @@ body {
 }
 
 .link-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -624,7 +626,7 @@ body {
 .link-description {
   font-size: 13px;
   color: var(--gray-500);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: "JetBrains Mono", monospace;
   margin-bottom: 16px;
 }
 
