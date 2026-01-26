@@ -1,16 +1,17 @@
 // src/config/giscus.ts
 export const giscusConfig = {
-  repo: 'your-username/your-repo', // 替换为你的GitHub仓库
-  repoId: 'R_kgDOG...', // 从 https://github.com/apps/giscus 获取
+  repo: 'applex250/MyBlog', // 替换为你的GitHub仓库
+  repoId: 'R_kgDORBfnnQ', // 从 https://github.com/apps/giscus 获取
   category: 'Announcements',
-  categoryId: 'DIC_kwDOG...', // 从 https://github.com/apps/giscus 获取
+  categoryId: 'DIC_kwDORBfnnc4C1cle', // 从 https://github.com/apps/giscus 获取
   mapping: 'pathname',
   strict: '0',
   reactionsEnabled: '1',
-  emitMetadata: '0',
-  inputPosition: 'bottom',
-  theme: 'light',
+  emitMetadata: '1',
+  inputPosition: 'top',
+  theme: 'noborder_light',
   lang: 'zh-CN',
+  loading: 'lazy',
 };
 
 // 配置说明：

@@ -17,14 +17,16 @@ import { giscusConfig } from '@/config/giscus';
     data-reactions-enabled={giscusConfig.reactionsEnabled}
     data-emit-metadata={giscusConfig.emitMetadata}
     data-input-position={giscusConfig.inputPosition}
-    data-theme={theme}
+    data-theme={giscusConfig.theme}
     data-lang={giscusConfig.lang}
+    data-loading={giscusConfig.loading}
     crossorigin="anonymous"
     async
   ></script>
 </section>
 
 <style>
+
   .comments-section {
     margin-top: 80px;
     padding-top: 40px;
@@ -36,4 +38,5 @@ import { giscusConfig } from '@/config/giscus';
     font-weight: 300;
     margin-bottom: 32px;
   }
+  
 </style>
