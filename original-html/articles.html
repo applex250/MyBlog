@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章 | Articles</title>
+    <meta name="description" content="我的文章和思考，包含技术、设计、生活等内容。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --accent: #00d4aa;
+            --accent-light: rgba(0, 212, 170, 0.15);
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 0 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .site-nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .site-nav-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--gray-500);
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+
+        .site-nav-item:hover {
+            color: var(--black);
+        }
+
+        .site-nav-item.active {
+            color: var(--black);
+        }
+
+        .site-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .social-link {
+            color: var(--gray-400);
+            text-decoration: none;
+            padding: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--black);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--gray-400);
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--black);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 140px 60px 80px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .page-title {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--gray-500);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .search-section {
+            max-width: 600px;
+            margin: 0 auto 60px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            padding-right: 56px;
+            font-size: 16px;
+            font-family: 'Crimson Pro', serif;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-400);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            pointer-events: none;
+        }
+
+        .search-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .section-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--gray-400);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 80px;
+        }
+
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .category-card:nth-child(1) { animation-delay: 0.2s; }
+        .category-card:nth-child(2) { animation-delay: 0.25s; }
+        .category-card:nth-child(3) { animation-delay: 0.3s; }
+        .category-card:nth-child(4) { animation-delay: 0.35s; }
+        .category-card:nth-child(5) { animation-delay: 0.4s; }
+        .category-card:nth-child(6) { animation-delay: 0.45s; }
+
+        .category-card:hover {
+            border-color: var(--gray-300);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-icon {
+            width: 56px;
+            height: 56px;
+            margin-bottom: 16px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover .category-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .category-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .category-count {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .articles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .article-card {
+            display: flex;
+            gap: 24px;
+            padding: 32px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .article-card:nth-child(1) { animation-delay: 0.5s; }
+        .article-card:nth-child(2) { animation-delay: 0.55s; }
+        .article-card:nth-child(3) { animation-delay: 0.6s; }
+        .article-card:nth-child(4) { animation-delay: 0.65s; }
+
+        .article-card:hover {
+            border-color: var(--gray-300);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .article-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .article-card:hover::before {
+            opacity: 1;
+        }
+
+        .article-content {
+            flex: 1;
+        }
+
+        .article-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gray-500);
+            background: var(--gray-100);
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+
+        .article-title {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .article-excerpt {
+            color: var(--gray-500);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gray-400);
+        }
+
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .article-meta-item svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .site-footer {
+            margin-top: 80px;
+            padding: 40px 60px;
+            border-top: 1px solid var(--gray-200);
+            text-align: center;
+            color: var(--gray-400);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .site-footer a {
+            color: var(--gray-500);
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            color: var(--black);
+        }
+
+        .hand-drawn {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.5;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                padding: 120px 40px 60px;
+            }
+
+            .site-nav {
+                padding: 0 40px;
+            }
+
+            .page-title {
+                font-size: 36px;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .site-nav {
+                padding: 0 20px;
+            }
+
+            .site-nav-right {
+                gap: 8px;
+            }
+
+            .main-container {
+                padding: 120px 20px 40px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .article-card {
+                padding: 24px;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .site-footer {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <div class="site-nav-left">
+                <a href="articles.html" class="site-nav-item">文章</a>
+                <a href="personal-website.html" class="site-nav-item">个人简介</a>
+                <a href="projects.html" class="site-nav-item">开源项目</a>
+                <a href="links.html" class="site-nav-item">链接</a>
+            </div>
+            <div class="site-nav-right">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                    </svg>
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" title="Twitter">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/>
+                    </svg>
+                </a>
+                <button class="theme-toggle" title="切换主题">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <header class="page-header">
+            <h1 class="page-title">Articles</h1>
+            <p class="page-subtitle">我的思考与记录 · 技术· 设计· 生活</p>
+        </header>
+
+        <section class="search-section">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="搜索文章..." id="searchInput">
+                <div class="search-icon">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-header">
+            <span>分类</span>
+        </div>
+
+        <div class="categories-grid">
+            <a href="#" class="category-card">
+                <div class="category-icon">
+                    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#0a0a0a">
+                        <path d="M24 4L28 14L40 14L30 22L34 34L24 26L14 34L18 22L8 14L20 14L24 4Z" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="category-title">技术</h3>
+                <span class="category-count">12 篇文章</span>
+            </a>
+
+            <a href="#" class="category-card">
+                <div class="category-icon">
+                    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#00d4aa">
+                        <rect x="8" y="8" width="32" height="32" rx="2" stroke-width="1.5" stroke="#0a0a0a"/>
+                        <path d="M16 16h16M16 24h16M16 32h8" stroke-width="1.5" stroke="#0a0a0a"/>
+                    </svg>
+                </div>
+                <h3 class="category-title">设计</h3>
+                <span class="category-count">8 篇文章</span>
+            </a>
+
+            <a href="#" class="category-card">
+                <div class="category-icon">
+                    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#0a0a0a">
+                        <path d="M24 24c6.63 0 12-5.37 12-12S30.63 0 24 0 12 5.37 12 12s5.37 12 12 12z" stroke-width="1.5"/>
+                        <path d="M24 28c-10 0-18 5.37-18 12v8h36v-8c0-6.63-8-12-18-12z" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="category-title">生活</h3>
+                <span class="category-count">15 篇文章</span>
+            </a>
+
+            <a href="#" class="category-card">
+                <div class="category-icon">
+                    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#0a0a0a">
+                        <rect x="6" y="10" width="36" height="28" rx="2" stroke-width="1.5"/>
+                        <path d="M6 18L24 26L42 18" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="category-title">阅读</h3>
+                <span class="category-count">6 篇文章</span>
+            </a>
+
+            <a href="#" class="category-card">
+                <div class="category-icon">
+                    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#0a0a0a">
+                        <path d="M4 4h16v16H4zM4 28h16v16H4zM28 4h16v16H28zM28 28h16v16H28z" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="category-title">项目</h3>
+                <span class="category-count">4 篇文章</span>
+            </a>
+
+            <a href="#" class="category-card">
+                <div class="category-icon">
+                    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#0a0a0a">
+                        <circle cx="24" cy="24" r="20" stroke-width="1.5"/>
+                        <path d="M24 14v20M14 24h20" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <h3 class="category-title">随笔</h3>
+                <span class="category-count">20 篇文章</span>
+            </a>
+        </div>
+
+        <div class="section-header">
+            <span>推荐文章</span>
+        </div>
+
+        <div class="articles-list">
+            <a href="#" class="article-card">
+                <div class="article-content">
+                    <span class="article-tag">技术</span>
+                    <h3 class="article-title">深入理解 React 并发模式：从基础到实践</h3>
+                    <p class="article-excerpt">React 18 引入的并发模式是一个重大的架构变革，本文将深入探讨其核心原理，包括时间切片、优先级调度等概念，并通过实际案例展示如何在实际项目中应用。</p>
+                    <div class="article-meta">
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="9"/>
+                                <polyline points="12 7 12 12 15 15"/>
+                            </svg>
+                            <span>2024-01-15</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>8 评论</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            <span>12 分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="article-card">
+                <div class="article-content">
+                    <span class="article-tag">设计</span>
+                    <h3 class="article-title">极简主义设计原则：Less is More 的艺术</h3>
+                    <p class="article-excerpt">在信息爆炸的时代，极简主义设计以其清晰、高效的特点受到越来越多人的青睐。本文将探讨极简设计的核心原则，以及如何在保持功能性的同时实现视觉的纯粹。</p>
+                    <div class="article-meta">
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="9"/>
+                                <polyline points="12 7 12 12 15 15"/>
+                            </svg>
+                            <span>2024-01-10</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>5 评论</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            <span>8 分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="article-card">
+                <div class="article-content">
+                    <span class="article-tag">生活</span>
+                    <h3 class="article-title">2023 年度总结：在不确定性中寻找平衡</h3>
+                    <p class="article-excerpt">回顾过去的一年，充满了挑战与成长。在这篇文章中，我将分享我的工作、学习、生活中的变化，以及对未来的思考和规划。</p>
+                    <div class="article-meta">
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="9"/>
+                                <polyline points="12 7 12 12 15 15"/>
+                            </svg>
+                            <span>2024-01-01</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>15 评论</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            <span>6 分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="article-card">
+                <div class="article-content">
+                    <span class="article-tag">技术</span>
+                    <h3 class="article-title">TypeScript 高级类型技巧：提升代码质量</h3>
+                    <p class="article-excerpt">TypeScript 的类型系统非常强大，但很多高级特性往往被忽视。本文将介绍一些实用的类型技巧，帮助你写出更安全、更优雅的代码。</p>
+                    <div class="article-meta">
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="9"/>
+                                <polyline points="12 7 12 12 15 15"/>
+                            </svg>
+                            <span>2023-12-28</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>3 评论</span>
+                        </div>
+                        <div class="article-meta-item">
+                            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            <span>10 分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>&copy; 2024 · 用心创造</p>
+        <p style="margin-top: 8px;"><a href="personal-website.html">返回首页</a></p>
+    </footer>
+
+    <script>
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.style.filter = document.body.style.filter ? '' : 'invert(1) hue-rotate(180deg)';
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                alert('搜索功能：' + searchInput.value);
+            }
+        });
+    </script>
+</body>
+</html>

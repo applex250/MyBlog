@@ -1,0 +1,20 @@
+---
+// src/components/layout/Footer.astro
+import { siteConfig } from '@/config/site';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <p>&copy; {currentYear} · {siteConfig.author}</p>
+  <p style="margin-top: 8px;">
+    <a href={siteConfig.url} target="_blank" rel="noopener noreferrer">
+      {siteConfig.title}
+    </a>
+  </p>
+  <p style="margin-top: 8px;">
+    主题灵感来自{' '}
+    <a href="https://svtter.cn" target="_blank" rel="noopener noreferrer">
+      Fried Rice
+    </a>
+  </p>
+</footer>

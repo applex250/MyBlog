@@ -1,0 +1,39 @@
+---
+// src/components/comment/Giscus.astro
+const { theme = 'light' } = Astro.props;
+import { giscusConfig } from '@/config/giscus';
+---
+
+<section class="comments-section">
+  <h2>评论</h2>
+  <script
+    src="https://giscus.app/client.js"
+    data-repo={giscusConfig.repo}
+    data-repo-id={giscusConfig.repoId}
+    data-category={giscusConfig.category}
+    data-category-id={giscusConfig.categoryId}
+    data-mapping={giscusConfig.mapping}
+    data-strict={giscusConfig.strict}
+    data-reactions-enabled={giscusConfig.reactionsEnabled}
+    data-emit-metadata={giscusConfig.emitMetadata}
+    data-input-position={giscusConfig.inputPosition}
+    data-theme={theme}
+    data-lang={giscusConfig.lang}
+    crossorigin="anonymous"
+    async
+  ></script>
+</section>
+
+<style>
+  .comments-section {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--gray-200);
+  }
+
+  .comments-section h2 {
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+</style>

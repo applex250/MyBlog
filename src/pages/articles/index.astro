@@ -1,0 +1,294 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/article/ArticleCard.astro';
+import SearchBox from '@/components/ui/SearchBox.astro';
+import { getAllArticles } from '@/lib/articles';
+import { siteConfig } from '@/config/site';
+
+const articles = await getAllArticles();
+
+const currentFilter = Astro.url.searchParams.get('category') || '';
+
+let filteredArticles = articles;
+
+if (currentFilter) {
+  filteredArticles = filteredArticles.filter(a => a.category === currentFilter);
+}
+
+const categoryCounts = new Map<string, number>();
+articles.forEach(article => {
+  const count = categoryCounts.get(article.category) || 0;
+  categoryCounts.set(article.category, count + 1);
+});
+
+const categories = siteConfig.categories.map((cat: any) => ({
+  ...cat,
+  count: categoryCounts.get(cat.slug) || 0,
+})).sort((a: any, b: any) => b.count - a.count);
+---
+
+<BaseLayout 
+  title="文章 | Articles" 
+  description="我的文章和思考，包含技术、设计、生活等内容。"
+>
+  <div class="main-container">
+    <header class="page-header animate-fade-in-down">
+      <h1 class="page-title">Articles</h1>
+      <p class="page-subtitle">我的思考与记录 · 技术· 设计· 生活</p>
+    </header>
+
+    <SearchBox />
+
+    <div class="section-header">
+      <span>分类筛选</span>
+    </div>
+
+    <div class="categories-grid">
+      {categories.map((category, index) => (
+        <a
+          href={`?category=${category.slug}`}
+          class={`category-card ${category.slug === currentFilter ? 'active' : ''} animate-fade-in-up`}
+          style={`animation-delay: ${0.1 + index * 0.05}s`}
+        >
+          <div class="category-icon" set:html={category.icon} />
+          <div class="category-info">
+            <h3 class="category-name">{category.name}</h3>
+            <p class="category-count">{category.count} 篇</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="section-header">
+      <span>推荐文章</span>
+    </div>
+
+    <div class="articles-list">
+      {filteredArticles.map((article, index) => (
+        <a
+          href={`/articles/${article.slug}`}
+          class="article-card animate-fade-in-up"
+          style={`animation-delay: ${0.2 + index * 0.05}s`}
+        >
+          <div class="article-content">
+            <span class="article-tag">{article.category}</span>
+            <h3 class="article-title">{article.title}</h3>
+            <p class="article-excerpt">{article.description}</p>
+            <div class="article-meta">
+              <div class="article-meta-item">
+                <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="9" />
+                  <polyline points="12 7 12 12 15 15" />
+                </svg>
+                <span>{article.date}</span>
+              </div>
+              <div class="article-meta-item">
+                <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="9" />
+                  <polyline points="12 7 12 12 15 15" />
+                </svg>
+                <span>{article.readingTime} 分钟</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .section-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-400);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-header::before {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .category-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--black);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.08);
+  }
+
+  .category-card.active {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+  }
+
+  .category-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .category-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .category-info {
+    flex: 1;
+  }
+
+  .category-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 4px 0;
+  }
+
+  .category-count {
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gray-500);
+    margin: 0;
+  }
+
+  .category-card.active .category-count {
+    color: var(--gray-400);
+  }
+
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .article-card {
+    display: flex;
+    gap: 24px;
+    padding: 32px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--black);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .article-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08);
+  }
+
+  .article-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .article-card:hover::before {
+    opacity: 1;
+  }
+
+  .article-content {
+    flex: 1;
+  }
+
+  .article-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gray-500);
+    background: var(--gray-100);
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  .article-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  .article-excerpt {
+    color: var(--gray-500);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--gray-400);
+  }
+
+  .article-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .article-meta-item svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.6;
+  }
+
+  @media (max-width: 640px) {
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .article-card {
+      padding: 24px;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+</style>

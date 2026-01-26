@@ -1,0 +1,130 @@
+---
+// src/pages/index.astro
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { siteConfig } from '@/config/site';
+---
+
+<BaseLayout title="关于 | 个人主页" description="你好，朋友，我是一名热衷于创造数字体验的开发者，专注于构建简洁而富有表现力的产品。">
+  <div class="main-container">
+    <div class="main-content">
+      <article class="article">
+        <header class="article-header animate-fade-in-down">
+          <h1 class="article-title">个人简介</h1>
+          <div class="article-meta">
+            <div class="article-meta-item">
+              <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="9" />
+                <polyline points="12 7 12 12 15 15" />
+              </svg>
+              <span>阅读时长: 3 分钟</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="article-content">
+          <div class="profile-section animate-fade-in-up" style="animation-delay: 0.1s">
+            <div class="profile-avatar">
+              <svg viewBox="0 0 100 100" fill="none" stroke="#0a0a0a">
+                <circle cx="50" cy="50" r="48" stroke-width="1.5" class="hand-drawn" />
+                <circle cx="50" cy="35" r="18" stroke-width="1.5" class="hand-drawn" />
+                <path d="M20 85 Q50 70 80 85" stroke-width="1.5" class="hand-drawn" />
+                <path d="M35 35 Q50 40 65 35" stroke-width="1" stroke="#00d4aa" opacity="0.6" class="hand-drawn" />
+              </svg>
+            </div>
+            <h2 class="profile-name">{siteConfig.author}</h2>
+            <p class="profile-bio">开发者 · 设计师 · 写作者</p>
+          </div>
+
+          <blockquote class="animate-fade-in-up" style="animation-delay: 0.2s">
+            <p>hello world!</p>
+          </blockquote>
+
+          <p>你好，朋友，我是一名热衷于创造数字体验的开发者，专注于构建简洁而富有表现力的产品。</p>
+
+          <p>我是一个开源爱好者，也是一个连续创业者。我相信技术的力量可以改变世界，也热爱分享和交流。</p>
+
+          <p>
+            我的邮箱是 <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>。
+          </p>
+
+          <p>我十分欢迎商业合作与技术交流，欢迎与我联系。</p>
+
+          <h2 id="projects">作品</h2>
+
+          <div class="card animate-fade-in-up" style="animation-delay: 0.3s">
+            <h3>项目管理工具</h3>
+            <p>一个极简的项目管理应用，帮助团队更高效地协作。采用React构建，支持实时同步和智能提醒功能。</p>
+          </div>
+
+          <div class="card animate-fade-in-up" style="animation-delay: 0.4s">
+            <h3>设计系统文档</h3>
+            <p>为大型企业构建的设计系统文档平台，包含完整的组件库和使用指南，提升开发效率。</p>
+          </div>
+
+          <div class="card animate-fade-in-up" style="animation-delay: 0.5s">
+            <h3>创意作品集</h3>
+            <p>一个展示插画和数字艺术作品的在线画廊，采用沉浸式设计和流畅的动画效果。</p>
+          </div>
+
+          <h2 id="skills">技能</h2>
+
+          <p>我在以下领域有丰富的经验：</p>
+
+          <div class="skills-container">
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.6s">前端开发</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.62s">UI/UX 设计</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.64s">React & Vue</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.66s">TypeScript</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.68s">Node.js</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.7s">产品思维</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.72s">内容写作</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.74s">项目管理</span>
+          </div>
+
+          <h2 id="contact">联系</h2>
+
+          <p>如果你对我的作品感兴趣，或者想要交流合作，欢迎通过以下方式联系我：</p>
+
+          <div class="card animate-fade-in-up" style="animation-delay: 0.8s">
+            <h3>社交媒体</h3>
+            <p>你可以在 GitHub、Twitter、LinkedIn 上找到我，关注我的最新动态和分享。</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    margin-bottom: 40px;
+  }
+
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+  }
+
+  .profile-avatar svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .profile-name {
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: var(--black);
+  }
+
+  .profile-bio {
+    font-size: 14px;
+    color: var(--gray-500);
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>

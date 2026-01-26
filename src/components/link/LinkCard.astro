@@ -1,0 +1,24 @@
+---
+// src/components/link/LinkCard.astro
+const { link } = Astro.props;
+const target = link.url.startsWith('http') ? '_blank' : '_self';
+const rel = link.url.startsWith('http') ? 'noopener noreferrer' : '';
+---
+
+<a href={link.url} target={target} rel={rel} class="link-card">
+  <div class="link-icon">
+    <svg class="hand-drawn" viewBox="0 0 48 48" fill="none" stroke="#0a0a0a">
+      <circle cx="24" cy="24" r="20" stroke-width="1.5" />
+      <path d="M24 14v20M14 24h16" stroke-width="1.5" />
+    </svg>
+  </div>
+  <div class="link-content">
+    <h3 class="link-title">{link.title}</h3>
+    <p class="link-description">{link.description}</p>
+    <div class="link-arrow">
+      <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </div>
+  </div>
+</a>

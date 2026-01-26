@@ -1,0 +1,42 @@
+---
+// src/layouts/ArticleLayout.astro
+import type { Article } from '@/lib/articles';
+import { formatDate } from '@/lib/utils';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+---
+
+<div class="main-container">
+  <div class="main-content">
+    <article class="article">
+      <header class="article-header animate-fade-in-down">
+        <h1 class="article-title">{article.title}</h1>
+        <div class="article-meta">
+          <div class="article-meta-item">
+            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="9" />
+              <polyline points="12 7 12 12 15 15" />
+            </svg>
+            <span>{formatDate(article.date)}</span>
+          </div>
+          <div class="article-meta-item">
+            <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="9" />
+              <polyline points="12 7 12 12 15 15" />
+            </svg>
+            <span>阅读时长: {article.readingTime} 分钟</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 使用slot渲染内容 -->
+      <slot name="article-content" />
+
+      <slot name="comments" />
+    </article>
+  </div>
+</div>

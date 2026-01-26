@@ -1,0 +1,192 @@
+---
+// src/components/ui/SearchBox.astro
+---
+
+<div class="search-section">
+  <div class="search-wrapper">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="搜索文章..."
+      id="searchInput"
+      autocomplete="off"
+    />
+    <div class="search-icon">
+      <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8" />
+        <path d="M21 21l-4.35-4.35" />
+      </svg>
+    </div>
+  </div>
+  <div id="searchResults" class="search-results"></div>
+</div>
+
+<style>
+  .search-section {
+    max-width: 600px;
+    margin: 0 auto 60px;
+    position: relative;
+  }
+
+  .search-wrapper {
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 16px 24px;
+    padding-right: 56px;
+    font-size: 16px;
+    font-family: 'Crimson Pro', serif;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--black);
+    transition: all 0.3s ease;
+  }
+
+  .search-input::placeholder {
+    color: var(--gray-400);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+    pointer-events: none;
+  }
+
+  .search-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 8px;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+  }
+
+  .search-results.active {
+    display: block;
+  }
+</style>
+
+<script>
+  // Pagefind搜索逻辑
+  const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+  const searchResults = document.getElementById('searchResults') as HTMLElement;
+  let searchTimeout: NodeJS.Timeout | null = null;
+
+  if (searchInput && searchResults) {
+    searchInput.addEventListener('input', async (e) => {
+      const query = (e.target as HTMLInputElement).value;
+      clearTimeout(searchTimeout!);
+
+      if (query.length < 2) {
+        searchResults.classList.remove('active');
+        searchResults.innerHTML = '';
+        return;
+      }
+
+      searchTimeout = setTimeout(async () => {
+        try {
+          // 尝试加载Pagefind
+          const response = await fetch('/pagefind/search.json');
+          const data = await response.json();
+
+          // 简单的搜索逻辑
+          const results = data.pages.filter((page: any) =>
+            page.excerpt.toLowerCase().includes(query.toLowerCase()) ||
+            page.meta.title.toLowerCase().includes(query.toLowerCase())
+          );
+
+          if (results.length === 0) {
+            searchResults.innerHTML = '<div class="no-results">未找到相关文章</div>';
+            searchResults.classList.add('active');
+            return;
+          }
+
+          const resultsHTML = results
+            .slice(0, 5)
+            .map((result: any) => `
+            <a href="${result.url}" class="search-result-item">
+              <h3>${result.meta.title}</h3>
+              <p>${result.meta.excerpt || ''}</p>
+            </a>
+          `)
+            .join('');
+
+          searchResults.innerHTML = resultsHTML;
+          searchResults.classList.add('active');
+        } catch (error) {
+          console.error('Search error:', error);
+          searchResults.innerHTML = '<div class="no-results">搜索功能暂不可用</div>';
+          searchResults.classList.add('active');
+        }
+      }, 300);
+    });
+
+    // 点击外部关闭搜索结果
+    document.addEventListener('click', (e) => {
+      if (!searchResults.contains(e.target as Node) && e.target !== searchInput) {
+        searchResults.classList.remove('active');
+      }
+    });
+  }
+</script>
+
+<style>
+  .no-results {
+    padding: 16px 24px;
+    color: var(--gray-500);
+    text-align: center;
+  }
+
+  .search-result-item {
+    display: block;
+    padding: 16px 24px;
+    text-decoration: none;
+    color: var(--black);
+    border-bottom: 1px solid var(--border-light);
+    transition: background 0.3s ease;
+  }
+
+  .search-result-item:hover {
+    background: var(--gray-100);
+  }
+
+  .search-result-item:last-child {
+    border-bottom: none;
+  }
+
+  .search-result-item h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .search-result-item p {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin: 0;
+  }
+</style>

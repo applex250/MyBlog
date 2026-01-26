@@ -1,0 +1,42 @@
+---
+// src/pages/articles/[slug].astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import Giscus from '@/components/comment/Giscus.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props as { article: CollectionEntry<'articles'> };
+
+const { Content } = await article.render();
+---
+
+<BaseLayout title={article.data.title} description={article.data.description}>
+  <ArticleLayout
+    article={{
+      id: article.id,
+      slug: article.slug,
+      title: article.data.title,
+      description: article.data.description,
+      date: article.data.date,
+      category: article.data.category,
+      tags: article.data.tags,
+      readingTime: article.data.readingTime,
+      image: article.data.image,
+      content: article.body, // 使用 body 而不是 Content
+    }}
+  >
+    <Content slot="article-content" />
+    <slot name="comments" slot="comments">
+      <Giscus />
+    </slot>
+  </ArticleLayout>
+</BaseLayout>

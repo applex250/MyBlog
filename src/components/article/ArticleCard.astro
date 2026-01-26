@@ -1,0 +1,29 @@
+---
+// src/components/article/ArticleCard.astro
+const { article } = Astro.props;
+import { formatDate } from '@/lib/utils';
+---
+
+<a href={`/articles/${article.slug}`} class="article-card">
+  <div class="article-content">
+    <span class="article-tag">{article.category}</span>
+    <h3 class="article-title">{article.title}</h3>
+    <p class="article-excerpt">{article.description}</p>
+    <div class="article-meta">
+      <div class="article-meta-item">
+        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="9" />
+          <polyline points="12 7 12 12 15 15" />
+        </svg>
+        <span>{formatDate(article.date)}</span>
+      </div>
+      <div class="article-meta-item">
+        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="9" />
+          <polyline points="12 7 12 12 15 15" />
+        </svg>
+        <span>{article.readingTime} 分钟</span>
+      </div>
+    </div>
+  </div>
+</a>

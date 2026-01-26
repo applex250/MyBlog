@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源项目 | Projects</title>
+    <meta name="description" content="我的开源项目，包含各种工具、库和应用程序。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --gray-100: #f5f5f5;
+            --gray-200: #e5e5e5;
+            --gray-300: #d4d4d4;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --accent: #00d4aa;
+            --accent-light: rgba(0, 212, 170, 0.15);
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .site-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            z-index: 1000;
+            padding: 0 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .site-nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .site-nav-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--gray-500);
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: color 0.3s ease;
+        }
+
+        .site-nav-item:hover {
+            color: var(--black);
+        }
+
+        .site-nav-item.active {
+            color: var(--black);
+        }
+
+        .site-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .social-link {
+            color: var(--gray-400);
+            text-decoration: none;
+            padding: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--black);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--gray-400);
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--black);
+        }
+
+        .theme-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 140px 60px 80px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .page-title {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: var(--gray-500);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .projects-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .projects-filter {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--gray-300);
+            color: var(--black);
+        }
+
+        .filter-btn.active {
+            background: var(--black);
+            color: var(--white);
+            border-color: var(--black);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .project-card {
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 28px;
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.2s; }
+        .project-card:nth-child(2) { animation-delay: 0.25s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.35s; }
+        .project-card:nth-child(5) { animation-delay: 0.4s; }
+        .project-card:nth-child(6) { animation-delay: 0.45s; }
+
+        .project-card:hover {
+            border-color: var(--gray-300);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.08);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .project-title {
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-title {
+            color: var(--accent);
+        }
+
+        .project-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.6;
+        }
+
+        .project-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .project-star {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--gray-400);
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-star {
+            color: var(--accent);
+        }
+
+        .project-star svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-description {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gray-400);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-item svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.6;
+        }
+
+        .language-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .site-footer {
+            margin-top: 80px;
+            padding: 40px 60px;
+            border-top: 1px solid var(--gray-200);
+            text-align: center;
+            color: var(--gray-400);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .site-footer a {
+            color: var(--gray-500);
+            text-decoration: none;
+        }
+
+        .site-footer a:hover {
+            color: var(--black);
+        }
+
+        .hand-drawn {
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.5;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                padding: 120px 40px 60px;
+            }
+
+            .site-nav {
+                padding: 0 40px;
+            }
+
+            .page-title {
+                font-size: 36px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .site-nav {
+                padding: 0 20px;
+            }
+
+            .site-nav-right {
+                gap: 8px;
+            }
+
+            .main-container {
+                padding: 120px 20px 40px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .projects-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .projects-filter {
+                flex-wrap: wrap;
+            }
+
+            .project-card {
+                padding: 24px 20px;
+            }
+
+            .project-title {
+                font-size: 18px;
+            }
+
+            .site-footer {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="site-nav-container">
+            <div class="site-nav-left">
+                <a href="articles.html" class="site-nav-item">文章</a>
+                <a href="personal-website.html" class="site-nav-item">个人简介</a>
+                <a href="projects.html" class="site-nav-item">开源项目</a>
+                <a href="links.html" class="site-nav-item">链接</a>
+            </div>
+            <div class="site-nav-right">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" title="GitHub">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                    </svg>
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" title="Twitter">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84 0 0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/>
+                    </svg>
+                </a>
+                <button class="theme-toggle" title="切换主题">
+                    <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <header class="page-header">
+            <h1 class="page-title">Open Source</h1>
+            <p class="page-subtitle">我的开源项目 · 分享与协作</p>
+        </header>
+
+        <div class="projects-header">
+            <span class="projects-count">6 个项目</span>
+            <div class="projects-filter">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="web">Web应用</button>
+                <button class="filter-btn" data-filter="miniprogram">小程序</button>
+                <button class="filter-btn" data-filter="ai">AI/ML</button>
+                <button class="filter-btn" data-filter="tools">工具库</button>
+            </div>
+        </div>
+
+        <div class="projects-grid">
+            <a href="https://github.com/username/project1" target="_blank" rel="noopener noreferrer" class="project-card" data-category="tools">
+                <div class="project-header">
+                    <div class="project-title">
+                        <svg class="project-icon" viewBox="0 0 20 20" fill="none" stroke="#f1e05a">
+                            <circle cx="10" cy="10" r="9" class="hand-drawn"/>
+                            <path d="M5 10h10M10 5v10" stroke-width="1.5" class="hand-drawn"/>
+                        </svg>
+                        <span>awesome-toolkit</span>
+                    </div>
+                    <div class="project-star">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>1.2k</span>
+                    </div>
+                </div>
+                <p class="project-description">一个强大的工具集，包含常用的开发工具和实用函数，帮助开发者提高工作效率。</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="language-dot" style="background: #f1e05a;"></span>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        <span>MIT License</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15 15"/>
+                        </svg>
+                        <span>3 天前</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://github.com/username/project2" target="_blank" rel="noopener noreferrer" class="project-card" data-category="tools">
+                <div class="project-header">
+                    <div class="project-title">
+                        <svg class="project-icon" viewBox="0 0 20 20" fill="none" stroke="#3178c6">
+                            <circle cx="10" cy="10" r="9" class="hand-drawn"/>
+                            <path d="M6 10l4 4 4-4" stroke-width="1.5" class="hand-drawn"/>
+                        </svg>
+                        <span>react-components</span>
+                    </div>
+                    <div class="project-star">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>856</span>
+                    </div>
+                </div>
+                <p class="project-description">一套精美的React组件库，遵循设计系统，开箱即用，支持主题定制。</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="language-dot" style="background: #3178c6;"></span>
+                        <span>TypeScript</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        <span>Apache 2.0</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15 15"/>
+                        </svg>
+                        <span>1 周前</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://github.com/username/project3" target="_blank" rel="noopener noreferrer" class="project-card" data-category="tools">
+                <div class="project-header">
+                    <div class="project-title">
+                        <svg class="project-icon" viewBox="0 0 20 20" fill="none" stroke="#3572A5">
+                            <circle cx="10" cy="10" r="9" class="hand-drawn"/>
+                            <path d="M7 10l3 3 3-3" stroke-width="1.5" class="hand-drawn"/>
+                        </svg>
+                        <span>api-gateway</span>
+                    </div>
+                    <div class="project-star">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>432</span>
+                    </div>
+                </div>
+                <p class="project-description">轻量级的API网关，支持负载均衡、缓存、限流等功能，易于扩展。</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="language-dot" style="background: #3572A5;"></span>
+                        <span>TypeScript</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        <span>MIT License</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15 15"/>
+                        </svg>
+                        <span>2 周前</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://github.com/username/project4" target="_blank" rel="noopener noreferrer" class="project-card" data-category="tools">
+                <div class="project-header">
+                    <div class="project-title">
+                        <svg class="project-icon" viewBox="0 0 20 20" fill="none" stroke="#4B8BBE">
+                            <circle cx="10" cy="10" r="9" class="hand-drawn"/>
+                            <path d="M7 10l3 3 3-3" stroke-width="1.5" class="hand-drawn"/>
+                        </svg>
+                        <span>data-visualizer</span>
+                    </div>
+                    <div class="project-star">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>267</span>
+                    </div>
+                </div>
+                <p class="project-description">数据可视化库，支持多种图表类型，基于D3.js构建，性能优异。</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="language-dot" style="background: #4B8BBE;"></span>
+                        <span>TypeScript</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        <span>MIT License</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15 15"/>
+                        </svg>
+                        <span>1 个月前</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://github.com/username/project5" target="_blank" rel="noopener noreferrer" class="project-card" data-category="tools">
+                <div class="project-header">
+                    <div class="project-title">
+                        <svg class="project-icon" viewBox="0 0 20 20" fill="none" stroke="#00d4aa">
+                            <circle cx="10" cy="10" r="9" class="hand-drawn"/>
+                            <path d="M7 10l3 3 3-3" stroke-width="1.5" class="hand-drawn"/>
+                        </svg>
+                        <span>cli-tools</span>
+                    </div>
+                    <div class="project-star">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>189</span>
+                    </div>
+                </div>
+                <p class="project-description">命令行工具集合，包含文件处理、文本编辑、网络请求等常用功能。</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="language-dot" style="background: #00d4aa;"></span>
+                        <span>Python</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        <span>MIT License</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15 15"/>
+                        </svg>
+                        <span>2 个月前</span>
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://github.com/username/project6" target="_blank" rel="noopener noreferrer" class="project-card" data-category="web">
+                <div class="project-header">
+                    <div class="project-title">
+                        <svg class="project-icon" viewBox="0 0 20 20" fill="none" stroke="#f1e05a">
+                            <circle cx="10" cy="10" r="9" class="hand-drawn"/>
+                            <path d="M7 10l3 3 3-3" stroke-width="1.5" class="hand-drawn"/>
+                        </svg>
+                        <span>blog-template</span>
+                    </div>
+                    <div class="project-star">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>124</span>
+                    </div>
+                </div>
+                <p class="project-description">简洁优雅的博客模板，基于Next.js和Tailwind CSS，支持Markdown和代码高亮。</p>
+                <div class="project-meta">
+                    <div class="meta-item">
+                        <span class="language-dot" style="background: #f1e05a;"></span>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                        </svg>
+                        <span>MIT License</span>
+                    </div>
+                    <div class="meta-item">
+                        <svg class="hand-drawn" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="9"/>
+                            <polyline points="12 7 12 12 15 15"/>
+                        </svg>
+                        <span>3 个月前</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>&copy; 2024 · 用心创造</p>
+        <p style="margin-top: 8px;"><a href="https://github.com/username" target="_blank" rel="noopener noreferrer">查看所有项目</a></p>
+    </footer>
+
+    <script>
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.style.filter = document.body.style.filter ? '' : 'invert(1) hue-rotate(180deg)';
+        });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                projectCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'block';
+                        card.style.opacity = '1';
+                    } else {
+                        card.style.display = 'none';
+                        card.style.opacity = '0';
+                    }
+                });
+
+                const visibleCards = Array.from(document.querySelectorAll('.project-card')).filter(card => card.style.display !== 'none');
+                document.querySelector('.projects-count').textContent = visibleCards.length + ' 个项目';
+            });
+        });
+    </script>
+</body>
+</html>
