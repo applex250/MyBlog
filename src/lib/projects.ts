@@ -17,7 +17,7 @@ export async function getAllProjects(): Promise<Project[]> {
     {
       id: 'clawdbot-watchdog',
       title: 'clawdbot-watchdog',
-      description: 'Clawdbot Gateway 监控守护进程 - 自动监控 Gateway 状态，检测到掉线时自动刷新 Clash 订阅并重启服务。支持 WhatsApp 实时通知、交互式命令、失败保护等功能。',
+      description: 'Clawdbot Gateway 监控守护宝 - 自动监控Clawdbot Gateway 状态，检测到掉线时自动刷新 Clash 订阅并重启服务。支持 交互式命令、失败保护等功能。',
       url: 'https://github.com/applex250/clawdbot-watchdog',
       stars: 0,
       language: 'JavaScript',

@@ -4,7 +4,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { siteConfig } from '@/config/site';
 ---
 
-<BaseLayout title="关于 | 个人主页" description="你好，朋友，我是一名热衷于创造数字体验的开发者，专注于构建简洁而富有表现力的产品。">
+<BaseLayout title="Wu | 个人主页" description="你好，我是Wu。如果你也对实用又有趣软件感兴趣，请订阅我吧。">
   <div class="main-container">
     <div class="main-content">
       <article class="article">
@@ -24,12 +24,7 @@ import { siteConfig } from '@/config/site';
         <div class="article-content">
           <div class="profile-section animate-fade-in-up" style="animation-delay: 0.1s">
             <div class="profile-avatar">
-              <svg viewBox="0 0 100 100" fill="none" stroke="#0a0a0a">
-                <circle cx="50" cy="50" r="48" stroke-width="1.5" class="hand-drawn" />
-                <circle cx="50" cy="35" r="18" stroke-width="1.5" class="hand-drawn" />
-                <path d="M20 85 Q50 70 80 85" stroke-width="1.5" class="hand-drawn" />
-                <path d="M35 35 Q50 40 65 35" stroke-width="1" stroke="#00d4aa" opacity="0.6" class="hand-drawn" />
-              </svg>
+              <img src="/avatar.jpg" alt="Wu" />
             </div>
             <h2 class="profile-name">{siteConfig.author}</h2>
             <p class="profile-bio">开发者 · 设计师 · 写作者</p>
@@ -39,9 +34,10 @@ import { siteConfig } from '@/config/site';
             <p>hello world!</p>
           </blockquote>
 
-          <p>你好，朋友，我是一名热衷于创造数字体验的开发者，专注于构建简洁而富有表现力的产品。</p>
+          <p>你好，我是Wu。如果你也对实用又有趣软件感兴趣，请订阅我吧。</p>
 
-          <p>我是一个开源爱好者，也是一个连续创业者。我相信技术的力量可以改变世界，也热爱分享和交流。</p>
+          <p>我是一个开源爱好者，也是一个连续创业者，也热爱分享和交流。我相信技术可以让我们的世界更有趣，
+          也希望技术可以让我们的世界更美好。订阅我，你不会吃亏，你将会源源不断的收到有意思的礼物。</p>
 
           <p>
             我的邮箱是 <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>。
@@ -52,29 +48,21 @@ import { siteConfig } from '@/config/site';
           <h2 id="projects">作品</h2>
 
           <div class="card animate-fade-in-up" style="animation-delay: 0.3s">
-            <h3>项目管理工具</h3>
-            <p>一个极简的项目管理应用，帮助团队更高效地协作。采用React构建，支持实时同步和智能提醒功能。</p>
+            <h3>Clawdbot守护宝</h3>
+            <p>自动监控Clawdbot Gateway 状态，保证你的Clawdbot一直在线，检测到掉线时自动刷新 Clash 订阅并重启服务。</p>
           </div>
 
-          <div class="card animate-fade-in-up" style="animation-delay: 0.4s">
-            <h3>设计系统文档</h3>
-            <p>为大型企业构建的设计系统文档平台，包含完整的组件库和使用指南，提升开发效率。</p>
-          </div>
-
-          <div class="card animate-fade-in-up" style="animation-delay: 0.5s">
-            <h3>创意作品集</h3>
-            <p>一个展示插画和数字艺术作品的在线画廊，采用沉浸式设计和流畅的动画效果。</p>
-          </div>
+          
 
           <h2 id="skills">技能</h2>
 
           <p>我在以下领域有丰富的经验：</p>
 
           <div class="skills-container">
-            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.6s">前端开发</span>
-            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.62s">UI/UX 设计</span>
-            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.64s">React & Vue</span>
-            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.66s">TypeScript</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.6s">全栈开发</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.62s">Unity</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.64s">神经网络</span>
+            <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.66s">ns3仿真</span>
             <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.68s">Node.js</span>
             <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.7s">产品思维</span>
             <span class="skill-tag animate-fade-in-up" style="animation-delay: 0.72s">内容写作</span>
@@ -105,20 +93,25 @@ import { siteConfig } from '@/config/site';
   }
 
   .profile-avatar {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 20px;
+    width: 160px;
+    height: 160px;
+    margin-bottom: 2px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--border-color, #66d1bfff);
   }
 
-  .profile-avatar svg {
+  .profile-avatar img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
 
   .profile-name {
     font-size: 32px;
     font-weight: 300;
-    margin-bottom: 8px;
+    margin-top: 12px;
+    margin-bottom: 2px;
     color: var(--black);
   }
 

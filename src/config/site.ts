@@ -3,13 +3,13 @@ export const siteConfig = {
   title: "个人博客",
   description: "分享技术、设计和生活",
   author: "Wu",
-  email: "hello@example.com",
-  url: "https://yourdomain.com",
+  email: "wu_workspace@163.com",
+  url: "https://wublog-48n.pages.dev/",
   social: {
     github: "https://github.com/applex250",
     twitter: "https://twitter.com",
     linkedin: "",
-    email: "mailto:hello@example.com",
+    email: "mailto:wu_workspace@163.com",
   },
   navigation: [
     { name: "文章", href: "/articles" },
